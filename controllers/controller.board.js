@@ -1,8 +1,14 @@
 const boardService = require("../services/service.board")
 
 class BoardController {
+    
     async getBoard (req, res, next) {
-        const result = await boardService.getBoard(req)
+        const result = await boardService.getBoard(req.query)
+        res.send(result)
+    }
+
+    async getBlogBoardList (req, res, next) {
+        const result = await boardService.getBlogBoardList(req.query)
         res.send(result)
     }
 
@@ -20,6 +26,12 @@ class BoardController {
         const result = await boardService.putBoard(req.body)
         res.send(result)
     }
+
+    async postLike (req, res, next) {
+        const result = await boardService.postLike(req.body)
+        res.send(result)
+    }
+
 }
 
 module.exports = new BoardController();
