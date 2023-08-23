@@ -7,6 +7,10 @@ app.use(express.json())
 // .env
 require('dotenv').config();
 
+const passport = require('passport');
+const passportConfig = require('./passport');
+passportConfig();
+
 const boardRouter = require('./routes/route.board')
 app.use('/board', boardRouter)
 const commentRouter = require('./routes/route.comment')

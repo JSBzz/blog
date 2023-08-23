@@ -19,9 +19,13 @@
   },
   "homepage": "https://github.com/JSBzz/blog#readme",
   "dependencies": {
+    "@prisma/client": "^5.2.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mysql2": "^3.6.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
+    "prisma": "^5.2.0"
   }
 }

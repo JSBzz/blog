@@ -1,5 +1,7 @@
 const connectionPool = require('../db/dbConnection');
 const accountQuery = require('../db/queries/query.account')
+const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 const { selectQueryToList, queryToAffectedRow, selectQueryToJson } = require('../utils/queryHandler')
 const { makeUniqueId } = require('../utils/uuidCreater')
 
@@ -7,15 +9,8 @@ class AccountService {
 
     async getAccount (query) {
       const { userId } = query
-      const connection = await connectionPool.getConnection()
-      try {
-        const result = selectQueryToJson(connection, accountQuery.getAccount, [userId])
-        return result
-      } catch(error) {
-        console.log(error)
-      } finally {
-        connection.release()
-      }
+      const result = await prisma.user.findFirst({ where : { USER_ID : userId } })
+      return result
     }
 
     async postAccount (body) {

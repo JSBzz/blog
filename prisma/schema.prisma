@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model board {
+  ID               Int       @id @default(autoincrement())
+  OWNER_ID         String?   @db.VarChar(50)
+  CATEGORY_ITEM_ID Int?
+  TITLE            String    @db.VarChar(45)
+  PASSWORD         String?   @db.VarChar(255)
+  USER_ID          String?   @db.VarChar(50)
+  CONTENTS         String    @db.Text
+  WRITER           String    @db.VarChar(45)
+  VIEW_COUNT       Int       @default(0)
+  WRITE_DATE       DateTime  @default(now()) @db.DateTime(0)
+  CHANGE_DATE      DateTime? @db.DateTime(0)
+  LIKE_COUNT       Int       @default(0)
+  IS_USE           Int       @default(1) @db.TinyInt
+}
+
+model board_like_log {
+  BOARD_ID Int
+  USER_ID  String @db.VarChar(50)
+
+  @@id([BOARD_ID, USER_ID])
+}
+
+model category {
+  CATEGORY_ID   Int    @id @default(autoincrement())
+  USER_ID       Int
+  CATEGORY_NAME String @db.VarChar(50)
+}
+
+model category_item {
+  CATEGORY_ITEM_ID   Int    @id @default(autoincrement())
+  CATEGORY_ID        Int
+  CATEGORY_ITEM_NAME String @db.VarChar(50)
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model comment {
+  ID          Int       @id @default(autoincrement())
+  BOARD_ID    Int
+  CONTENTS    String    @db.VarChar(50)
+  WRITER      String    @db.VarChar(50)
+  PASSWORD    String?   @db.VarChar(50)
+  REF_ID      Int?
+  LIKE_COUNT  Int       @default(0)
+  USER_ID     String?   @db.VarChar(50)
+  WRITE_DATE  DateTime  @default(dbgenerated("(now())")) @db.DateTime(0)
+  UPDATE_DATE DateTime? @db.DateTime(0)
+  IS_USE      Int       @default(1) @db.TinyInt
+}
+
+model comment_like_log {
+  COMMENT_ID Int
+  USER_ID    String @db.VarChar(50)
+
+  @@id([USER_ID, COMMENT_ID])
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model user {
+  USER_ID           String   @id @db.VarChar(50)
+  ID                String   @db.VarChar(50)
+  PASSWORD          String?  @db.VarChar(255)
+  PROFILE_IMAGE     String?  @db.VarChar(255)
+  INTRODUCTION      String?  @db.Text
+  REGISTER_DATETIME DateTime @default(dbgenerated("(now())")) @db.DateTime(0)
+  PLATFORM          String?  @db.VarChar(50)
+  NICKNAME          String   @db.VarChar(50)
+}
