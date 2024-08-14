@@ -212,7 +212,7 @@ const MenuBar = ({ setPostData, postData }: { setPostData: any; postData: any })
             editor.isActive({ textAlign: "right" }) ? "bg-slate-400" : ""
           } bg-slate-200 rounded-md pl-3 pr-3 mr-2 mb-1`}
         >
-          Right;
+          Right
         </button>
         <button
           onClick={() => editor.chain().focus().setTextAlign("justify").run()}
@@ -304,49 +304,19 @@ const extensions = [
   }),
 ];
 
-const content = `
-<h2>
-  Hi there,
-</h2>
-<p>
-  this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-</p>
-<pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-<p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-</p>
-<blockquote>
-  Wow, that’s amazing. Good work, boy! 👏
-  <br />
-  — Mom
-</blockquote>
-`;
-
 export default function Editor({ setPostData, postData }: { setPostData: any; postData: any }) {
+  console.log("postData: ", postData);
   return (
     <EditorProvider
       editorProps={{
         attributes: {
           class:
-            "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none border mt-4 w-[300px] sm:w-[500px] md:w-[1000px] p-2 rounded-md",
+            "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none border mt-4 w-[300px] sm:w-[500px] md:w-[1000px] p-2 rounded-md min-h-[500px]",
         },
       }}
       slotBefore={<MenuBar setPostData={setPostData} postData={postData} />}
       extensions={extensions}
-      content={content}
+      content={postData?.contents}
     ></EditorProvider>
   );
 }

@@ -1,9 +1,8 @@
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/config/prisma/db";
 import { genSalt, hash } from "bcryptjs";
-import { NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
-const client = new PrismaClient();
+const client = prisma;
 
 export async function POST(req: Request) {
   const body = await req.json();
@@ -21,10 +20,10 @@ export async function POST(req: Request) {
     data: { role: "user", nickname: nickname, id: username, pwd: hashPassword },
   });
 
-  return NextResponse.json("hello");
+  return NextResponse.json(null);
 }
 
-const randomNickname = [
+export const randomNickname = [
   "사자",
   "코끼리",
   "호랑이",

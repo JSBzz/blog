@@ -10,6 +10,7 @@ declare module "next-auth" {
       seq: bigint;
       id: string;
       nickname: string;
+      role: string;
     };
   }
   interface Token {

@@ -5,16 +5,23 @@ import SignUp from "./Auth/HeaderSignUp";
 
 export default async function Header() {
   const session = await auth();
+  console.log("session: ", session);
   return (
-    <div className="">
-      <div className="flex h-16 align-middle justify-center items-center shadow-md">
-        <SignIn session={session} />
-
-        <Link href="/">
-          <h1 className="absolute left-3 sm:left-[50%] top-[14px] font-bold text-2xl">Blog</h1>
-        </Link>
+    <div className="sticky top-0 z-50">
+      <div className=" bg-white opacity-95  backdrop-blur-3xl">
+        <div className="flex h-16 align-middle items-center shadow-md justify-between sticky top-0">
+          <SignIn session={session} />
+          <Link href="/">
+            <h1 className="font-bold text-2xl ml-6">Blog</h1>
+          </Link>
+        </div>
+        <SignUp />
       </div>
-      <SignUp />
+      {session?.user?.role == "admin" && (
+        <div className="bg-slate-50 p-1">
+          <Link href={"http://localhost:3000/category"}>카테고리 추가</Link>
+        </div>
+      )}
     </div>
   );
 }

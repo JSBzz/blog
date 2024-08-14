@@ -1,7 +1,7 @@
 import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { auth } from "@/app/config/next-auth/auth";
-import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/app/config/prisma/db";
 
 const Bucket = process.env.AMPLIFY_BUCKET;
 const s3 = new S3Client({
@@ -11,7 +11,7 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY as string,
   },
 });
-const client = new PrismaClient();
+const client = prisma;
 
 export async function POST(request: NextRequest) {
   const session = await auth();

@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client";
 import { compare } from "bcryptjs";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import prisma from "../prisma/db";
 
-const client = new PrismaClient();
+const client = prisma;
 
 export const {
   handlers,
@@ -49,6 +49,7 @@ export const {
       if (user) {
         token.id = user.id;
         token.seq = user.seq;
+        token.role = user.role;
         token.nickname = user.nickname;
       }
       return token;
@@ -57,6 +58,7 @@ export const {
       session.user.id = token.id as string;
       session.user.nickname = token.nickname as string;
       session.user.seq = token.seq as bigint;
+      session.user.role = token.role as string;
       return session;
     },
   },

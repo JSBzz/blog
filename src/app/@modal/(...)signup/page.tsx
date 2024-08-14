@@ -41,7 +41,7 @@ export default function Modal() {
     mutate(data);
   };
   return (
-    <div className="fixed bg-black bg-opacity-80 z-50 h-screen w-screen">
+    <div className="fixed bg-black bg-opacity-80 z-[100] h-screen w-screen">
       <div className="w-full h-full flex">
         <div className="w-96 min-h-96 bg-white bg-opacity-100 rounded-md p-2 m-auto">
           <button

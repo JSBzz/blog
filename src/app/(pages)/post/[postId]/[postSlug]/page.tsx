@@ -1,35 +1,40 @@
-"use client";
-import Tag from "@/app/_components/Card/Tag";
-import { useQuery } from "@tanstack/react-query";
 import "@/app/config/tiptab/style.scss";
+import PostHeader from "@/app/_components/Post/PostHeader";
+import PostContents from "@/app/_components/Post/PostContents";
+import { auth } from "@/app/config/next-auth/auth";
+import Comment from "@/app/_components/Comment/Comment";
+import Link from "next/link";
 
-export default function PostPage({ params }: { params: { postId: string; postSlug: string } }) {
-  const { data } = useQuery({
-    queryKey: ["post", params.postId, params.postSlug],
-    queryFn: async () => {
-      const response = await fetch(`http://localhost:3000/api/post/${params.postId}`);
-      return await response.json();
-    },
-  });
-  if (!data) {
-    return <></>;
-  }
+export default async function PostPage({
+  params,
+}: {
+  params: { postId: string; postSlug: string };
+}) {
+  const session = await auth();
+  const response = await fetch(`http://localhost:3000/api/post/${params.postId}`);
+  const responseComment = await fetch(`http://localhost:3000/api/comment?postId=${params.postId}`);
+  const data = await response.json();
+  const commentData = await responseComment.json();
   return (
-    <div className="flex mt-4 mb-4">
-      <div className="m-auto w-[300px] sm:w-[500px] md:w-[1000px]">
-        <div className="mb-2 w-full p-2">
-          <div className="font-bold text-4xl mb-1 break-words">{data?.title}</div>
-
-          <div className="text-1xl text-gray-500 p-1">2024-01-01</div>
-
-          <Tag color="red" text="test" href="/" />
+    <div>
+      <div className=" w-[400px] sm:w-[500px] md:w-[1000px] m-auto">
+        <div className="mt-4 mb-4">
+          <div className="m-auto w-[400px] sm:w-[500px] md:w-[1000px]">
+            <PostHeader data={data} />
+            <PostContents data={data} />
+            <div className="mt-1 text-right">
+              <Link
+                href={`http://localhost:3000/post/${params.postId}/edit`}
+                className="bg-green-200 text-green-800 rounded-md pr-1 pl-1 mr-2"
+              >
+                수정
+              </Link>
+              <button className="bg-green-200 text-green-800 rounded-md pr-1 pl-1">삭제</button>
+            </div>
+          </div>
         </div>
-        <div className="bg-slate-50">
-          <div
-            className="min-h-60 bg-slate-50 break-words w-full p-4 tiptap rounded-md"
-            dangerouslySetInnerHTML={{ __html: data?.contents }}
-          />
-        </div>
+        <Comment session={session} postId={params?.postId} commentList={commentData} />
+        <div className="h-96"></div>
       </div>
     </div>
   );

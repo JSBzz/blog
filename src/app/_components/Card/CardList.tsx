@@ -1,15 +1,24 @@
 "use client";
 
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
-import Card from "./Card";
+import CardBox from "./CardBox";
 import React, { useEffect, useState } from "react";
 import CardSkeleton from "./CardSkeleton";
 
-export default function CardList() {
+export default function CardList({
+  categoryCode,
+  tagName,
+}: {
+  categoryCode: string;
+  tagName: string;
+}) {
   const fetchPage = async ({ pageParam }: { pageParam: number }) => {
-    const res = await fetch(`http://localhost:3000/api/post?cursor=${pageParam}`, {
-      method: "get",
-    });
+    const res = await fetch(
+      `http://localhost:3000/api/post?cursor=${pageParam}&categoryCode=${categoryCode}&tagName=${tagName}`,
+      {
+        method: "get",
+      }
+    );
     return res.json();
   };
 
@@ -20,6 +29,7 @@ export default function CardList() {
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
     });
+  console.log("data: ", data);
 
   useEffect(() => {
     const clientScroll = () => {
@@ -49,6 +59,10 @@ export default function CardList() {
       </>
     );
   }
+  console.log("data?.pages?.length: ", data?.pages?.length);
+  if (data?.pages[0]?.data?.length == 0) {
+    return <div className="text-center mt-4">작성된 글이 없습니다.</div>;
+  }
   return (
     <div>
       {data?.pages.map((group, i) => {
@@ -57,7 +71,7 @@ export default function CardList() {
             {group?.data?.map((data: any) => {
               return (
                 <div key={`data-${data.id}`} className="mt-8">
-                  <Card data={data} />
+                  <CardBox data={data} />
                 </div>
               );
             })}
