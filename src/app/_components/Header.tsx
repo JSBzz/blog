@@ -5,7 +5,6 @@ import SignUp from "./Auth/HeaderSignUp";
 
 export default async function Header() {
   const session = await auth();
-  console.log("session: ", session);
   return (
     <div className="sticky top-0 z-50">
       <div className=" bg-white opacity-95  backdrop-blur-3xl">

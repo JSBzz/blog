@@ -1,4 +1,5 @@
 "use client";
+import NoAuthority from "@/app/_components/Auth/NoAuthority";
 import PostWriteCategory from "@/app/_components/Post/Write/PostWriteCategory";
 import PostWriteTag from "@/app/_components/Post/Write/PostWriteTag";
 import PostWriteTitle from "@/app/_components/Post/Write/PostWriteTitle";
@@ -34,12 +35,19 @@ const writePostRequest = async (postData: {
     });
   }
   await fetch("/api/post", {
-    method: "post",
+    method: "put",
     body: JSON.stringify({ ...postData, contents: uploadImageContents }),
   });
 };
-const getCategoryRequest = async () => {
+const getMainCategoryRequest = async () => {
   const response = await fetch("/api/category", {
+    method: "get",
+  });
+  return await response.json();
+};
+
+const getSubCategoryRequest = async () => {
+  const response = await fetch("/api/category?type=sub", {
     method: "get",
   });
   return await response.json();
@@ -48,42 +56,26 @@ const getCategoryRequest = async () => {
 export default function EditPost({ params }: { params: { postId: string; postSlug: string } }) {
   const router = useRouter();
   const session = useSession();
+  const [flag, setFlag] = useState(false);
   const [postData, setPostData] = useState<{
+    postId: string;
     title: string;
     contents: string;
     images: { file: File; url: string }[];
     tags: string[];
-    category: string;
+    mainCategory: string;
+    subCategory: string;
   }>({
+    postId: params?.postId,
     title: "",
     contents: "",
     images: [],
     tags: [],
-    category: "0",
+    mainCategory: "0",
+    subCategory: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  const { data, isLoading } = useQuery({
-    queryKey: ["edit", params.postId],
-    queryFn: async () => {
-      const response = await fetch(`/api/post/${params.postId}`);
-      const result = await response.json();
-      // if (result?.writer_seq) {
-      //   if (result?.writer_seq != session?.data?.user.seq) {
-      //     return <>ddd</>;
-      //   }
-      // }
-      setPostData({
-        ...postData,
-        title: result.title,
-        contents: result.contents,
-        category: result.category,
-        tags: result.post_tag.map((tag: any) => {
-          return tag.tag_name;
-        }),
-      });
-      return result;
-    },
-  });
+  const [subCategroy, setSubCategory] = useState([]);
   const [inputTag, setInputTag] = useState("");
   const { mutate } = useMutation({
     mutationKey: ["create-post"],
@@ -94,12 +86,55 @@ export default function EditPost({ params }: { params: { postId: string; postSlu
       router.push("/");
     },
   });
-  const { data: categoryData } = useQuery({
-    queryKey: ["categories"],
+  const { data, isLoading, isFetched } = useQuery({
+    queryKey: ["edit", params.postId],
     queryFn: async () => {
-      return await getCategoryRequest();
+      const response = await fetch(`/api/post/${params.postId}`);
+      const result = await response.json();
+
+      return result;
     },
   });
+  const { data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    enabled: !data,
+    queryFn: async () => {
+      const main = await getMainCategoryRequest();
+      const sub = await getSubCategoryRequest();
+
+      return { main, sub };
+    },
+  });
+  useEffect(() => {
+    if (data && categoryData) {
+      const postSubCategory = categoryData?.sub?.filter((subCategory: any) => {
+        if (subCategory?.parent_category_code == data?.category?.parent_category_code) {
+          return subCategory;
+        }
+      });
+      setSubCategory(postSubCategory);
+      setPostData({
+        ...postData,
+        title: data.title,
+        contents: data.contents,
+        subCategory: data.category?.category_code,
+        mainCategory: data?.category?.parent_category_code,
+        tags: data.post_tag.map((tag: any) => {
+          return tag.tag_name;
+        }),
+      });
+      setFlag(true);
+    }
+  }, [data, categoryData]);
+
+  if (!flag) return <>Loading...</>;
+  if (data?.user?.id != session?.data?.user?.id && session?.data?.user?.role != "admin") {
+    return (
+      <div className="absolute top-[50%] w-full text-center">
+        <NoAuthority message={"아이디 불일치"} />
+      </div>
+    );
+  }
   return (
     <div className="content-center object-center justify-center text-left flex flex-col">
       <div className="w-[300px] sm:w-[500px] md:w-[1000px] m-auto mt-4">
@@ -107,11 +142,13 @@ export default function EditPost({ params }: { params: { postId: string; postSlu
         <div className="mt-2">
           <PostWriteCategory
             postData={postData}
-            setPostData={setPostData}
             categoryData={categoryData}
+            subCategoryData={subCategroy}
+            setPostData={setPostData}
+            setSubCategory={setSubCategory}
           />
         </div>
-        {!isLoading && <Editor setPostData={setPostData} postData={postData} />}
+        {isFetched && <Editor setPostData={setPostData} postData={postData} />}
 
         <PostWriteTag
           postData={postData}

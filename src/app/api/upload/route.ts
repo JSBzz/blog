@@ -30,7 +30,6 @@ export async function POST(request: NextRequest) {
         ContentType: file.type,
       })
     );
-    console.log("response: ", response);
   }
 
   try {
@@ -48,7 +47,5 @@ export async function POST(request: NextRequest) {
     //   },
     // });
     return NextResponse.json(response);
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }

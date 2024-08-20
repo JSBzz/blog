@@ -30,7 +30,7 @@ export default function CardBox({ data }: { data: any }) {
       </div>
       <div className="w-full h-full">
         <Link
-          href={`/filter/post/ALL/${category?.category_code}`}
+          href={`/post/filter/ALL/${category?.category_code}`}
           className="sm:m-4 md:ml-0 m-4 text-slate-500"
         >
           {category?.category_name}
@@ -42,18 +42,22 @@ export default function CardBox({ data }: { data: any }) {
               {/* <h2 className="text-slate-500">{user.nickname}</h2> */}
             </section>
             <section className="h-16 max-w-[300px] mb-2 md:max-w-[500px] flex-grow text-ellipsis text-[#8a8a8a] break-words md:h-20">
-              <h1 className="line-clamp-2 pr-4 pl-4 md:pl-0 max-w-[260px] sm:max-w-[400px] md:max-w-[400px] md:line-clamp-3">
+              <h1 className="line-clamp-2 pr-4 pl-4 md:pl-0 max-w-[260px] sm:max-w-[400px] md:max-w-[350px] md:line-clamp-3">
                 {contents.replace(/<\/?[^>]+>/gi, "")}
               </h1>
             </section>
           </section>
         </Link>
-        <div className="pl-4 md:pl-0 h-6">
+        <div className="md:w-[420px] sm:w-96 break-words ml-4 md:ml-0 flex flex-wrap overflow-hidden h-8">
           {post_tag.map((tag: any) => {
-            return <Tag href={`/tag/${tag.tag_name}`} text={tag.tag_name} key={`tag-${tag.id}`} />;
+            return (
+              <span key={`tag-${tag.id}`} className="w-fit flex flex-col">
+                <Tag href={`/tag/${tag.tag_name}`} text={tag.tag_name} />
+              </span>
+            );
           })}
         </div>
-        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 md:pl-0 h-8 md:h-2">{created_at}</div>
+        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 md:pl-0">{created_at}</div>
       </div>
     </div>
   );

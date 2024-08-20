@@ -6,11 +6,11 @@ import { useEffect, useState } from "react";
 export default function CommentInput({
   session,
   postId,
-  setCommentData,
+  refetch,
 }: {
   session: any;
   postId: any;
-  setCommentData: any;
+  refetch: any;
 }) {
   const [userInfo, setUserInfo] = useState({
     userId: session?.user?.id ?? "",
@@ -22,21 +22,20 @@ export default function CommentInput({
   const [error, setError] = useState("");
   const { mutate } = useMutation({
     mutationFn: async () => {
-      const response = await fetch("/api/comment", {
+      const response = await fetch(`/api/post/${postId}/comment`, {
         method: "post",
         body: JSON.stringify({
           ...userInfo,
           comment: comment,
-          postId: postId,
         }),
       });
-      const data = await response.json();
       setComment("");
-      setCommentData(data);
+    },
+    onSuccess: async () => {
+      await refetch();
     },
   });
   const handleOnClick = () => {
-    console.log("comment: ", !comment);
     if (!userInfo?.nickname?.replaceAll(" ", "")) {
       setError("닉네임을 입력해주세요.");
       return;

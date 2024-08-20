@@ -3,7 +3,6 @@ import { Tag } from "../Tag/Tag";
 import { TagListInPost } from "../Tag/TagList";
 
 export default function PostHeader({ data }: { data: any }) {
-  console.log("data: ", data);
   return (
     <div className="mb-2 w-full p-2">
       <div className="font-bold text-4xl mb-1 break-words">{data?.title}</div>

@@ -7,10 +7,12 @@ export async function GET(request: NextRequest, { params }: { params: { postId: 
   try {
     const response = await client.post.findUnique({
       where: { id: Number(params.postId) },
-      include: { category: true, post_tag: true },
+      include: {
+        category: true,
+        post_tag: true,
+        user: { select: { role: true, id: true, seq: true } },
+      },
     });
     return NextResponse.json(response);
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }

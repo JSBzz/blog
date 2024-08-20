@@ -1,4 +1,5 @@
 "use client";
+import PostWriteCategory from "@/app/_components/Post/Write/PostWriteCategory";
 import Editor from "@/app/config/tiptab/editor";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -34,8 +35,15 @@ const writePostRequest = async (postData: {
     body: JSON.stringify({ ...postData, contents: uploadImageContents }),
   });
 };
-const getCategoryRequest = async () => {
+const getMainCategoryRequest = async () => {
   const response = await fetch("/api/category", {
+    method: "get",
+  });
+  return await response.json();
+};
+
+const getSubCategoryRequest = async () => {
+  const response = await fetch("/api/category?type=sub", {
     method: "get",
   });
   return await response.json();
@@ -48,16 +56,18 @@ export default function WritePost() {
     contents: string;
     images: { file: File; url: string }[];
     tags: string[];
-    category: string;
+    mainCategory: string;
+    subCategory: string;
   }>({
     title: "",
     contents: "",
     images: [],
     tags: [],
-    category: "0",
+    mainCategory: "0",
+    subCategory: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
-  // const [tags, setTags] = useState<string[]>([]);
+  const [subCategroy, setSubCategory] = useState([]);
   const [inputTag, setInputTag] = useState("");
   const { mutate } = useMutation({
     mutationKey: ["create-post"],
@@ -68,12 +78,15 @@ export default function WritePost() {
       router.push("/");
     },
   });
-  const { data: categoryData } = useQuery({
+  const { data: categoryData, isLoading } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
-      return await getCategoryRequest();
+      const main = await getMainCategoryRequest();
+      const sub = await getSubCategoryRequest();
+      return { main, sub };
     },
   });
+  if (isLoading) return <div>Loading...</div>;
   return (
     <div className="content-center object-center justify-center text-left flex flex-col">
       <div className="w-[300px] sm:w-[500px] md:w-[1000px] m-auto mt-4">
@@ -90,23 +103,13 @@ export default function WritePost() {
           />
         </div>
         <div className="mt-2">
-          <label className="mr-2">카테고리</label>
-          <select
-            onChange={(e) => {
-              setPostData({ ...postData, category: e.target.value });
-            }}
-          >
-            <option value={0}>없음</option>
-            {categoryData?.map(
-              (category: { id: number; category_name: string; category_code: string }) => {
-                return (
-                  <option key={`category-${category.id}`} value={category.category_code}>
-                    {category.category_name}
-                  </option>
-                );
-              }
-            )}
-          </select>
+          <PostWriteCategory
+            categoryData={categoryData}
+            postData={postData}
+            subCategoryData={subCategroy}
+            setPostData={setPostData}
+            setSubCategory={setSubCategory}
+          />
         </div>
         <Editor setPostData={setPostData} postData={postData} />
         <div className="mt-2">

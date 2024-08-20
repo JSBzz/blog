@@ -4,28 +4,29 @@ import { NextRequest, NextResponse } from "next/server";
 
 const client = prisma;
 
-export async function GET(req: NextRequest) {
-  const postId = req?.nextUrl?.searchParams.get("postId");
+export async function GET(request: NextRequest, { params }: { params: { postId: string } }) {
   const response = await client.post_comment.findMany({
     select: {
-      post_id: true,
       comment: true,
       created_at: true,
       guest_nickname: true,
+      changed_at: true,
       writer_id: true,
       id: true,
       is_delete: true,
       user: true,
+      post_id: true,
     },
-    where: { post_id: Number(postId) },
+    where: { post_id: Number(params.postId) },
+    orderBy: { id: "asc" },
   });
 
   return NextResponse.json(response);
 }
 
-export async function POST(req: Request) {
+export async function POST(req: Request, { params }: { params: { postId: string } }) {
   const body = await req.json();
-  const { userId, nickname, password, comment, postId } = body;
+  const { userId, nickname, password, comment } = body;
   let hashPassword = "";
   if (password) {
     const salt = await genSalt(10);
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
     data: {
       comment: comment,
       writer_id: userId,
-      post_id: postId,
+      post_id: Number(params?.postId),
       password: hashPassword,
       guest_nickname: userId ? "" : nickname,
     },
@@ -50,7 +51,7 @@ export async function POST(req: Request) {
       user: true,
     },
     where: {
-      post_id: postId,
+      post_id: Number(params?.postId),
     },
   });
 

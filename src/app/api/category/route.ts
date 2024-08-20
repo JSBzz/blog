@@ -5,7 +5,6 @@ const client = prisma;
 
 export async function GET(request: NextRequest) {
   const searchType = request?.nextUrl?.searchParams.get("type");
-  console.log("searchType: ", searchType);
   let response = [];
   try {
     if (searchType == "sub") {
@@ -23,16 +22,12 @@ export async function GET(request: NextRequest) {
         },
       });
     }
-    console.log("response: ", response);
     return NextResponse.json(response);
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  console.log("body: ", body);
   try {
     const response = await client.category.create({
       data: {
@@ -42,7 +37,5 @@ export async function POST(request: NextRequest) {
       },
     });
     return NextResponse.json(response);
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }

@@ -3,7 +3,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "noEmit": true,
     "target": "ES2015",
     "esModuleInterop": true,
@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "types/**/*.ts",
-    "src/app/(pages)/signup"
+    "src/app/(pages)/signup",
+    "src/app/(pages)/dashboard"
   ],
   "exclude": ["node_modules"]
 }

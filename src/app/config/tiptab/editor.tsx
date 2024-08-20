@@ -240,7 +240,6 @@ const MenuBar = ({ setPostData, postData }: { setPostData: any; postData: any })
           onChange={(e) => {
             if (e?.target?.files?.length) {
               const image = e.target.files[0];
-              console.log("image: ", image);
               const urlImage = URL.createObjectURL(image);
               setPostData({
                 ...postData,
@@ -271,7 +270,6 @@ const MenuBar = ({ setPostData, postData }: { setPostData: any; postData: any })
             color={color}
             onChange={(e: any) => {
               setColor(e);
-              console.log(e);
               editor.chain().focus().setColor(e.hex).run();
             }}
           />
@@ -305,7 +303,6 @@ const extensions = [
 ];
 
 export default function Editor({ setPostData, postData }: { setPostData: any; postData: any }) {
-  console.log("postData: ", postData);
   return (
     <EditorProvider
       editorProps={{

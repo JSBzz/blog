@@ -45,9 +45,7 @@ export async function GET(request: NextRequest) {
     });
     let nextCursor = response.length < 5 ? null : Number(response[response.length - 1].id);
     return NextResponse.json({ data: response, nextCursor: nextCursor });
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }
 
 export async function POST(request: NextRequest) {
@@ -60,7 +58,7 @@ export async function POST(request: NextRequest) {
         contents: body.contents,
         title: body.title,
         title_slug: body.title.replaceAll(" ", "-"),
-        category_code: body.category,
+        category_code: body?.subCategory,
         writer_seq: session?.user?.seq,
       },
     });
@@ -72,8 +70,35 @@ export async function POST(request: NextRequest) {
         };
       }),
     });
-    return NextResponse.json({});
+    return NextResponse.json({ response });
   } catch (e) {
     console.log("e: ", e);
   }
+}
+
+export async function PUT(request: NextRequest) {
+  const session = await auth();
+  const body = await request.json();
+
+  try {
+    const response = await client.post.update({
+      data: {
+        contents: body.contents,
+        title: body.title,
+        title_slug: body.title.replaceAll(" ", "-"),
+        category_code: body.subCategory,
+        writer_seq: session?.user?.seq,
+      },
+      where: { id: body?.postId },
+    });
+    await client.post_tag.createMany({
+      data: body?.tags.map((tag: string) => {
+        return {
+          table_id: response.id,
+          tag_name: tag,
+        };
+      }),
+    });
+    return NextResponse.json({});
+  } catch (e) {}
 }

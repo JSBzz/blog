@@ -2,6 +2,7 @@ import Link from "next/link";
 import PostCategory from "../Post/PostCategory";
 import { TagListAll } from "../Tag/TagList";
 import CardList from "../Card/CardList";
+import { auth } from "@/app/config/next-auth/auth";
 
 export default async function Main({
   categoryCode,
@@ -10,14 +11,17 @@ export default async function Main({
   categoryCode: string;
   tagName: string;
 }) {
+  const session = await auth();
   const tagResponse = await fetch(
     `http://localhost:3000/api/post/tag?categoryCode=${categoryCode}`,
     {
       method: "get",
+      cache: "no-store",
     }
   );
   categoryCode = categoryCode ?? "ALL";
   tagName = tagName ?? "ALL";
+  console.log("tagName: ", tagName);
 
   const mainCategoryResponse = await fetch("http://localhost:3000/api/category", {
     cache: "no-store",
@@ -62,12 +66,16 @@ export default async function Main({
         </div>
         <div className="flex flex-col m-auto w-fit">
           <div className="text-right">
-            <Link
-              href={"http://localhost:3000/post/create-post"}
-              className="bg-slate-300 text-slate-700 p-2 rounded-md pt-1 pb-1 mb-2 border-b-2 border-r-2 border-slate-400 active:border-0 h-8"
-            >
-              작성
-            </Link>
+            {session?.user?.role == "admin" ? (
+              <Link
+                href={"http://localhost:3000/post/create-post"}
+                className="bg-slate-300 text-slate-700 p-2 rounded-md pt-1 pb-1 mb-2 border-b-2 border-r-2 border-slate-400 active:border-0 h-8"
+              >
+                작성
+              </Link>
+            ) : (
+              <></>
+            )}
           </div>
           <div className="mb-8 w-[340px] md:w-[640px] sm:w-[450px]">
             <CardList categoryCode={categoryCode} tagName={tagName} />

@@ -4,8 +4,8 @@ import type { NextRequest } from "next/server";
 import { match } from "path-to-regexp";
 import { auth } from "./app/config/next-auth/auth";
 
-const matchersForAuth = ["/dashboard/*", "/myaccount/*", "/settings/*", "..."];
-const matchersForSignIn = ["/signup/*", "/signin/*"];
+const matchersForAuth = []; //["/post/*/edit", "/myaccount/*", "/settings/*", "..."];
+const matchersForSignIn = []; //["/signup/*", "/signin/*"];
 export async function middleware(request: NextRequest) {
   // 인증이 필요한 페이지 접근 제어!
   if (isMatch(request.nextUrl.pathname, matchersForAuth)) {

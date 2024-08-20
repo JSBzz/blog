@@ -1,10 +1,25 @@
 import CommentBox from "./CommentBox";
 
-export default function CommentList({ commentList, session }: { commentList: any; session: any }) {
+export default function CommentList({
+  data,
+  session,
+  refetch,
+}: {
+  data: any;
+  session: any;
+  refetch: any;
+}) {
   return (
     <div>
-      {commentList.map((comment: any) => {
-        return <CommentBox key={`comment-${comment.id}`} data={comment} session={session} />;
+      {data.map((comment: any) => {
+        return (
+          <CommentBox
+            key={`comment-${comment.id}`}
+            comment={comment}
+            session={session}
+            refetch={refetch}
+          />
+        );
       })}
     </div>
   );

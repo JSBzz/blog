@@ -36,9 +36,13 @@ export default function PostWriteTag({
         <div className="border m-auto p-2 gap-y-2 min-h-11">
           {postData?.tags?.map((tagName: string, idx: any) => {
             return (
-              <span className="bg-slate-200 p-1 rounded-md m-1 text-wrap" key={`add-tag-${idx}`}>
+              <span
+                className="bg-slate-200 p-1 pl-2 rounded-md m-1 text-wrap"
+                key={`add-tag-${idx}`}
+              >
                 {tagName}{" "}
                 <button
+                  className="pr-1 text-black"
                   onClick={() => {
                     setPostData({
                       ...postData,

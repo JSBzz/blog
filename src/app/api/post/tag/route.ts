@@ -7,7 +7,18 @@ export async function GET(request: NextRequest) {
   const categoryCode = request?.nextUrl?.searchParams.get("categoryCode");
 
   try {
-    const response = (await client.$queryRawUnsafe(`
+    const response =
+      categoryCode == "ALL"
+        ? await client.$queryRaw`
+      SELECT 
+        pt.tag_name, 
+        COUNT(pt.tag_name) as _count
+      FROM post p
+      INNER JOIN post_tag pt
+      ON pt.table_id = p.id
+      GROUP BY pt.tag_name
+      `
+        : ((await client.$queryRawUnsafe(`
       SELECT tag_name, COUNT(tag_name) as _count
       FROM (
           SELECT * 
@@ -21,7 +32,7 @@ export async function GET(request: NextRequest) {
               ) post_list
       INNER JOIN post_tag pt
         ON post_list.id = pt.table_id
-        GROUP BY tag_name`)) as any;
+        GROUP BY tag_name`)) as any);
     const postCount =
       categoryCode == "ALL"
         ? await client.post.count()
@@ -32,10 +43,7 @@ export async function GET(request: NextRequest) {
               },
             },
           });
-    console.log("postCount: ", postCount);
     response.unshift({ tag_name: "ALL", _count: postCount });
     return NextResponse.json(response);
-  } catch (e) {
-    console.log("e: ", e);
-  }
+  } catch (e) {}
 }

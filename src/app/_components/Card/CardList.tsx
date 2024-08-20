@@ -29,7 +29,6 @@ export default function CardList({
       initialPageParam: 0,
       getNextPageParam: (lastPage, allPages) => lastPage.nextCursor,
     });
-  console.log("data: ", data);
 
   useEffect(() => {
     const clientScroll = () => {
@@ -59,7 +58,6 @@ export default function CardList({
       </>
     );
   }
-  console.log("data?.pages?.length: ", data?.pages?.length);
   if (data?.pages[0]?.data?.length == 0) {
     return <div className="text-center mt-4">작성된 글이 없습니다.</div>;
   }

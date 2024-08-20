@@ -12,7 +12,7 @@ export default async function PostPage({
 }) {
   const session = await auth();
   const response = await fetch(`http://localhost:3000/api/post/${params.postId}`);
-  const responseComment = await fetch(`http://localhost:3000/api/comment?postId=${params.postId}`);
+  const responseComment = await fetch(`http://localhost:3000/api/post/${params.postId}/comment`);
   const data = await response.json();
   const commentData = await responseComment.json();
   return (
@@ -22,15 +22,17 @@ export default async function PostPage({
           <div className="m-auto w-[400px] sm:w-[500px] md:w-[1000px]">
             <PostHeader data={data} />
             <PostContents data={data} />
-            <div className="mt-1 text-right">
-              <Link
-                href={`http://localhost:3000/post/${params.postId}/edit`}
-                className="bg-green-200 text-green-800 rounded-md pr-1 pl-1 mr-2"
-              >
-                수정
-              </Link>
-              <button className="bg-green-200 text-green-800 rounded-md pr-1 pl-1">삭제</button>
-            </div>
+            {(session?.user && session?.user?.id == data?.user?.id) ||
+            session?.user?.role == "admin" ? (
+              <div>
+                <button className="mt-1 text-right bg-gray-200 text-gray-800 rounded-md pr-1 pl-1 mr-2">
+                  <Link href={`http://localhost:3000/post/${params.postId}/edit`}>수정</Link>
+                </button>
+                <button className="bg-gray-200 text-gray-800 rounded-md pr-1 pl-1">삭제</button>
+              </div>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
         <Comment session={session} postId={params?.postId} commentList={commentData} />
