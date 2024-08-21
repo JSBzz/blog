@@ -16,7 +16,7 @@ export default function CardList({
 }) {
   const fetchPage = async ({ pageParam }: { pageParam: number }) => {
     const res = await fetch(
-      `http://localhost:3000/api/post?cursor=${pageParam}&categoryCode=${categoryCode}&tagName=${tagName}&searchParam=${searchParam}`,
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post?cursor=${pageParam}&categoryCode=${categoryCode}&tagName=${tagName}&searchParam=${searchParam}`,
       {
         method: "get",
       }
