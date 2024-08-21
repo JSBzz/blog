@@ -23,7 +23,9 @@ export async function GET(request: NextRequest) {
       });
     }
     return NextResponse.json(response);
-  } catch (e) {}
+  } catch (e) {
+    console.log("e ERROR!!!: ", e);
+  }
 }
 
 export async function POST(request: NextRequest) {
