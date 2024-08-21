@@ -53,7 +53,9 @@ export async function GET(request: NextRequest) {
     });
     let nextCursor = response.length < 5 ? null : Number(response[response.length - 1].id);
     return NextResponse.json({ data: response, nextCursor: nextCursor });
-  } catch (e) {}
+  } catch (err) {
+    console.log("err: ", err);
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -108,5 +110,7 @@ export async function PUT(request: NextRequest) {
       }),
     });
     return NextResponse.json({});
-  } catch (e) {}
+  } catch (err) {
+    console.log("err: ", err);
+  }
 }

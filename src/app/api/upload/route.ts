@@ -47,5 +47,7 @@ export async function POST(request: NextRequest) {
     //   },
     // });
     return NextResponse.json(response);
-  } catch (e) {}
+  } catch (err) {
+    console.log("err: ", err);
+  }
 }

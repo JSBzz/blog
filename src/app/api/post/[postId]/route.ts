@@ -14,5 +14,7 @@ export async function GET(request: NextRequest, { params }: { params: { postId: 
       },
     });
     return NextResponse.json(response);
-  } catch (e) {}
+  } catch (err) {
+    console.log("err: ", err);
+  }
 }

@@ -45,5 +45,7 @@ export async function GET(request: NextRequest) {
           });
     response.unshift({ tag_name: "ALL", _count: postCount });
     return NextResponse.json(response);
-  } catch (e) {}
+  } catch (err) {
+    console.log("err: ", err);
+  }
 }
