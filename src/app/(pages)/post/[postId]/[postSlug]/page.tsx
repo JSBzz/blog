@@ -11,8 +11,10 @@ export default async function PostPage({
   params: { postId: string; postSlug: string };
 }) {
   const session = await auth();
-  const response = await fetch(`http://localhost:3000/api/post/${params.postId}`);
-  const responseComment = await fetch(`http://localhost:3000/api/post/${params.postId}/comment`);
+  const response = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${params.postId}`);
+  const responseComment = await fetch(
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${params.postId}/comment`
+  );
   const data = await response.json();
   const commentData = await responseComment.json();
   return (
@@ -26,7 +28,9 @@ export default async function PostPage({
             session?.user?.role == "admin" ? (
               <div>
                 <button className="mt-1 text-right bg-gray-200 text-gray-800 rounded-md pr-1 pl-1 mr-2">
-                  <Link href={`http://localhost:3000/post/${params.postId}/edit`}>수정</Link>
+                  <Link href={`${process.env.NEXT_PUBLIC_ROOT_URL}/post/${params.postId}/edit`}>
+                    수정
+                  </Link>
                 </button>
                 <button className="bg-gray-200 text-gray-800 rounded-md pr-1 pl-1">삭제</button>
               </div>

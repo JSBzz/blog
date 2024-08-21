@@ -3,6 +3,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import Spinner from "../Common/Spinner";
 
 const passwordVerifyRequest = async (data: any, password: string, target: string) => {
   const response = await fetch(`/api/post/${data?.post_id}/comment/${data?.id}/verification`, {
@@ -10,6 +11,7 @@ const passwordVerifyRequest = async (data: any, password: string, target: string
     body: JSON.stringify({ password: password }),
   });
   const isValid = await response.json();
+  console.log("isValid: ", isValid);
   return { isValid, target };
 };
 
@@ -56,7 +58,7 @@ export default function CommentBox({
     },
   });
 
-  const { mutate: deletMutate } = useMutation({
+  const { mutate: deletMutate, isPending: isPendingDelete } = useMutation({
     mutationFn: async () => {
       const response = await deleteCommentRequest(comment, password);
     },
@@ -66,9 +68,10 @@ export default function CommentBox({
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending: isPendingVerify } = useMutation({
     mutationFn: async (target: string) => {
-      if (comment?.writer_id == session?.user.id) return { isValid: true, target: target };
+      if (comment?.writer_id == session?.user.id && !!comment?.writer_id)
+        return { isValid: true, target: target };
       return await passwordVerifyRequest(comment, password, target);
     },
     onSuccess: (e) => {
@@ -137,6 +140,11 @@ export default function CommentBox({
         )}
       </div>
       <div className="text-right h-8 min-h-8">
+        {(isPendingDelete || isPendingVerify) && (
+          <span className="mr-2">
+            <Spinner />
+          </span>
+        )}
         <span className="text-red-600">{error}</span>
         {(comment?.guest_nickname ||
           (comment?.writer_id == session?.user?.id &&

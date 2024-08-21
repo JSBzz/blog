@@ -1,8 +1,23 @@
 "use client";
 import { signInWithCredentials, signOutWithForm } from "@/app/config/next-auth/authAction";
 import { Session } from "next-auth";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const loginError = (message) => {
+  toast.error(message, {
+    position: "bottom-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+  });
+};
 
 export default function SignIn({ session }: { session: Session | null }) {
   const [credential, setCredential] = useState({ username: "", password: "" });
@@ -22,7 +37,13 @@ export default function SignIn({ session }: { session: Session | null }) {
 
   return (
     <span className="absolute right-2 grid grid-cols-[214px,40px] w-52 overflow-hiddene">
-      <form className="grid grid-cols-[144px,50px]" action={signInWithCredentials}>
+      <form
+        className="grid grid-cols-[144px,50px]"
+        action={async (e) => {
+          const result = await signInWithCredentials(e);
+          if (!result?.status) loginError(result?.message);
+        }}
+      >
         <div className="flex flex-col w-36 border">
           <input
             type="text"

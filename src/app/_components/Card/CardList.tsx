@@ -8,13 +8,15 @@ import CardSkeleton from "./CardSkeleton";
 export default function CardList({
   categoryCode,
   tagName,
+  searchParam,
 }: {
   categoryCode: string;
   tagName: string;
+  searchParam: string;
 }) {
   const fetchPage = async ({ pageParam }: { pageParam: number }) => {
     const res = await fetch(
-      `http://localhost:3000/api/post?cursor=${pageParam}&categoryCode=${categoryCode}&tagName=${tagName}`,
+      `http://localhost:3000/api/post?cursor=${pageParam}&categoryCode=${categoryCode}&tagName=${tagName}&searchParam=${searchParam}`,
       {
         method: "get",
       }

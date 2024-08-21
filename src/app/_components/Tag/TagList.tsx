@@ -9,8 +9,6 @@ export async function TagListAll({
   selectedTagName: string | null;
   selectedCategoryCode: string;
 }) {
-  console.log("tagList: ", tagList);
-  console.log("selectedTagName: ", decodeURIComponent(selectedTagName));
   return tagList.map((tag: any) => {
     if (tag.tag_name == decodeURIComponent(selectedTagName)) {
       return (

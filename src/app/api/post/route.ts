@@ -8,10 +8,17 @@ export async function GET(request: NextRequest) {
   const cursor = request?.nextUrl?.searchParams.get("cursor");
   const categoryCode = request?.nextUrl?.searchParams.get("categoryCode");
   const tagName = request?.nextUrl?.searchParams.get("tagName");
+  const searchParam = request?.nextUrl?.searchParams.get("searchParam");
   const sort = request?.nextUrl?.searchParams.get("sort");
 
   let tagQuery = {};
   let categoryQuery = {};
+  let searchQuery = {};
+  if (searchParam != "null") {
+    searchQuery = {
+      OR: [{ title: { contains: searchParam } }, { contents: { contains: searchParam } }],
+    };
+  }
 
   if (categoryCode != "ALL")
     categoryQuery = {
@@ -37,6 +44,7 @@ export async function GET(request: NextRequest) {
       },
       where: {
         id: cursor == "0" ? { gt: Number(cursor) } : { lt: Number(cursor) },
+        ...searchQuery,
         ...categoryQuery,
         ...tagQuery,
       },

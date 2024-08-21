@@ -18,7 +18,7 @@ export default async function Header() {
       </div>
       {session?.user?.role == "admin" && (
         <div className="bg-slate-50 p-1">
-          <Link href={"http://localhost:3000/category"}>카테고리 추가</Link>
+          <Link href={`${process.env.NEXT_PUBLIC_ROOT_URL}/category`}>카테고리 추가</Link>
         </div>
       )}
     </div>

@@ -17,7 +17,9 @@ export default function Comment({
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["POST", "COMMENT", postId],
     queryFn: async () => {
-      const responseComment = await fetch(`http://localhost:3000/api/post/${postId}/comment`);
+      const responseComment = await fetch(
+        `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${postId}/comment`
+      );
       return await responseComment.json();
     },
   });

@@ -11,8 +11,6 @@ export default function PostWriteCategory({
   setSubCategory: any;
   subCategoryData: any;
 }) {
-  console.log("subCategoryData: ", subCategoryData);
-  console.log("postData: ", postData);
   return (
     <div>
       <label className="mr-2">메인 카테고리</label>
