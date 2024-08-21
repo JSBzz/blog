@@ -44,6 +44,9 @@ export async function GET(request: NextRequest) {
             },
           });
     response.unshift({ tag_name: "ALL", _count: postCount });
+    response.map((data) => {
+      data._count = String(data._count);
+    });
     return NextResponse.json(response);
   } catch (err) {
     console.log("err: ", err);
