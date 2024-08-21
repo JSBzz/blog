@@ -57,7 +57,7 @@ export const {
     session: async ({ session, token }) => {
       session.user.id = token.id as string;
       session.user.nickname = token.nickname as string;
-      session.user.seq = token.seq as bigint;
+      session.user.seq = token.seq as number;
       session.user.role = token.role as string;
       return session;
     },
