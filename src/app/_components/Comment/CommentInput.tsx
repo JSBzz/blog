@@ -1,5 +1,5 @@
 "use client";
-import { randomNickname } from "@/app/api/sign-up/route";
+import { randomNickname } from "@/app/config/common/userNickname";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
