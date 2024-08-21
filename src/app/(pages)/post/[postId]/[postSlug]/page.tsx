@@ -17,11 +17,12 @@ export default async function PostPage({
   );
   const data = await response.json();
   const commentData = await responseComment.json();
+  if (!data) return <>404 Not Found</>;
   return (
     <div>
-      <div className=" w-[400px] sm:w-[500px] md:w-[1000px] m-auto">
+      <div className=" w-[320px] sm:w-[500px] md:w-[700px] m-auto">
         <div className="mt-4 mb-4">
-          <div className="m-auto w-[400px] sm:w-[500px] md:w-[1000px]">
+          <div className="m-auto">
             <PostHeader data={data} />
             <PostContents data={data} />
             {(session?.user && session?.user?.id == data?.user?.id) ||
@@ -32,7 +33,17 @@ export default async function PostPage({
                     수정
                   </Link>
                 </button>
-                <button className="bg-gray-200 text-gray-800 rounded-md pr-1 pl-1">삭제</button>
+                <button
+                  className="bg-gray-200 text-gray-800 rounded-md pr-1 pl-1"
+                  // onClick={async () => {
+                  //   await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/post/${params.postId}`, {
+                  //     method: "delete",
+                  //   });
+                  // }
+                  // }
+                >
+                  삭제
+                </button>
               </div>
             ) : (
               <></>
