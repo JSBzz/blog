@@ -1,6 +1,7 @@
 "use client";
 import { randomNickname } from "@/app/config/common/userNickname";
 import { useMutation } from "@tanstack/react-query";
+import { Session } from "next-auth";
 import { useEffect, useState } from "react";
 
 export default function CommentInput({
@@ -8,8 +9,8 @@ export default function CommentInput({
   postId,
   refetch,
 }: {
-  session: any;
-  postId: any;
+  session: Session;
+  postId: string;
   refetch: any;
 }) {
   const [userInfo, setUserInfo] = useState({
@@ -62,11 +63,11 @@ export default function CommentInput({
   }, [session]);
   return (
     <div>
-      <div className="bg-slate-50 border rounded-t-md p-1 border-r-slate-400">
+      <div className="bg-slate-50 border rounded-t-md p-1 border-r-slate-400 dark:bg-slate-700 dark:border-black">
         닉네임{" "}
         <input
           type="text"
-          className="border"
+          className="border dark:border-black"
           disabled={!!session?.user?.nickname}
           onChange={(e) => {
             setUserInfo({ ...userInfo, nickname: e.target.value });
@@ -78,7 +79,7 @@ export default function CommentInput({
           <>
             <>비밀번호</>{" "}
             <input
-              className="border"
+              className="border dark:border-black"
               type="password"
               value={userInfo.password}
               onChange={(e) => {
@@ -88,7 +89,7 @@ export default function CommentInput({
           </>
         )}
         <button
-          className="bg-slate-200 rounded-br-md w-28 h-full border-b-slate-500 border-r-slate-500 border right-0"
+          className="bg-slate-200 rounded-br-md w-28 h-full border-b-slate-500 border-r-slate-500 border right-0 dark:border-black dark:bg-slate-500"
           onClick={handleOnClick}
         >
           댓글 등록
@@ -97,7 +98,7 @@ export default function CommentInput({
       </div>
       <div className="flex h-24">
         <textarea
-          className="border w-full border-b-slate-400 p-1 h-full"
+          className="border w-full border-b-slate-400 p-1 h-full dark:border-black"
           placeholder="댓글 작성"
           value={comment}
           onChange={(e) => {

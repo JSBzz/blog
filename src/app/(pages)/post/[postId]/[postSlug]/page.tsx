@@ -12,11 +12,7 @@ export default async function PostPage({
 }) {
   const session = await auth();
   const response = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${params.postId}`);
-  const responseComment = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${params.postId}/comment`
-  );
   const data = await response.json();
-  const commentData = await responseComment.json();
   if (!data) return <>404 Not Found</>;
   return (
     <div>
@@ -50,7 +46,7 @@ export default async function PostPage({
             )}
           </div>
         </div>
-        <Comment session={session} postId={params?.postId} commentList={commentData} />
+        <Comment session={session} postId={params?.postId} />
         <div className="h-96"></div>
       </div>
     </div>

@@ -104,9 +104,9 @@ export default function CommentBox({
   };
 
   return (
-    <div className="border rounded-md mt-5 shadow-md">
-      <div className="min-h-24 grid auto-rows-min">
-        <div className="p-1 border-b justify-between flex bg-gray-100">
+    <div className="border rounded-md mt-5 shadow-md dark:border-black">
+      <div className="min-h-24 grid auto-rows-min bg-white dark:bg-zinc-600">
+        <div className="p-1 border-b justify-between flex bg-gray-100 dark:bg-slate-600 dark:border-black">
           {comment?.guest_nickname ? (
             <div>{comment?.guest_nickname}(GUEST)</div>
           ) : (
@@ -123,14 +123,14 @@ export default function CommentBox({
         </div>
         {editFlag ? (
           <textarea
-            className="p-1 border"
+            className="p-1 border dark:border-black dark:bg-slate-500"
             value={editText}
             onChange={(e) => {
               setEditText(e.target.value);
             }}
           />
         ) : (
-          <div className="p-1">
+          <div className="p-1 bg-white dark:bg-zinc-600">
             {comment?.is_delete ? (
               <span className="text-slate-500">삭제된 댓글입니다.</span>
             ) : (
@@ -139,7 +139,7 @@ export default function CommentBox({
           </div>
         )}
       </div>
-      <div className="text-right h-8 min-h-8">
+      <div className="text-right h-8 min-h-8 bg-white dark:bg-zinc-600">
         {(isPendingDelete || isPendingVerify) && (
           <span className="mr-2">
             <Spinner />
@@ -155,7 +155,7 @@ export default function CommentBox({
               <>
                 <button
                   id="edit"
-                  className="text-right pr-1 pl-1 bg-slate-200 mr-1"
+                  className="text-right pr-1 pl-1 bg-slate-200 mr-1 dark:bg-slate-600"
                   onClick={() => {
                     if (editText != "") {
                       if (editText != comment?.comment) {
@@ -171,7 +171,7 @@ export default function CommentBox({
                   확인
                 </button>
                 <button
-                  className="text-right pr-1 pl-1 bg-slate-200 mr-1"
+                  className="text-right pr-1 pl-1 bg-slate-200 mr-1 dark:bg-slate-600"
                   onClick={() => {
                     setEditFlag(false);
                   }}
@@ -194,14 +194,14 @@ export default function CommentBox({
                 )}
                 <button
                   id="edit"
-                  className="text-right pr-1 pl-1 bg-slate-200 mr-1"
+                  className="text-right pr-1 pl-1 bg-slate-200 mr-1 dark:bg-slate-600"
                   onClick={onClick}
                 >
                   수정
                 </button>
                 <button
                   id="delete"
-                  className="text-right pr-1 pl-1 bg-slate-200 mr-1"
+                  className="text-right pr-1 pl-1 bg-slate-200 mr-1 dark:bg-slate-600"
                   onClick={onClick}
                 >
                   삭제

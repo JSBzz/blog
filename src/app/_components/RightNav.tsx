@@ -6,7 +6,7 @@ export default function RightNav() {
   const [viewNav, setViewNav] = useState(false);
 
   return (
-    <div>
+    <div className="md:invisible">
       <button
         className="fixed right-9 bg-slate-950 rounded-full min-h-10 min-w-10 text-white font-bold bottom-5 z-50"
         onClick={() => setViewNav(!viewNav)}

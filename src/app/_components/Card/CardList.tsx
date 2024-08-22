@@ -47,17 +47,11 @@ export default function CardList({
 
   if (status == "pending") {
     return (
-      <>
-        <div className="mt-8">
-          <CardSkeleton />
-        </div>
-        <div className="mt-8">
-          <CardSkeleton />
-        </div>
-        <div className="mt-8">
-          <CardSkeleton />
-        </div>
-      </>
+      <div className="justify-center flex flex-col m-auto text-center mt-4">
+        <CardSkeleton />
+        <CardSkeleton />
+        <CardSkeleton />
+      </div>
     );
   }
   if (data?.pages[0]?.data?.length == 0) {
@@ -80,7 +74,7 @@ export default function CardList({
       })}
       <div>
         {isFetching && isFetchingNextPage ? (
-          <div className="mt-8">
+          <div>
             <CardSkeleton />
           </div>
         ) : null}

@@ -1,3 +1,4 @@
+import { Session } from "next-auth";
 import CommentBox from "./CommentBox";
 
 export default function CommentList({
@@ -6,7 +7,7 @@ export default function CommentList({
   refetch,
 }: {
   data: any;
-  session: any;
+  session: Session;
   refetch: any;
 }) {
   return (

@@ -5,7 +5,7 @@ import { CiSearch } from "react-icons/ci";
 export default function SearchBar({ href }: { href: string }) {
   const [searchText, setSearchText] = useState("");
   return (
-    <div className="border w-fit flex m-auto rounded-l-md mt-4 p-1">
+    <div className="w-fit flex m-auto rounded-l-md mt-4 p-1 bg-white border dark:bg-slate-800">
       <input
         className="rounded-l-md pl-2 h-8 outline-none"
         placeholder="Search"

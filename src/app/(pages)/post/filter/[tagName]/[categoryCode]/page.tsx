@@ -5,7 +5,7 @@ export default async function Home({
   searchParams,
 }: {
   params: { tagName: string; categoryCode: string };
-  searchParams: any;
+  searchParams: { q: string };
 }) {
   return (
     <Main

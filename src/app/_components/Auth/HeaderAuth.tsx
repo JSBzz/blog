@@ -10,6 +10,7 @@ import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FcGoogle } from "react-icons/fc";
 import { SiNaver } from "react-icons/si";
+import Link from "next/link";
 
 const loginError = (message) => {
   toast.error(message, {
@@ -48,7 +49,7 @@ export default function SignIn({ session }: { session: Session | null }) {
   return (
     <>
       <form
-        className="grid grid-cols-[144px,60px] mr-2"
+        className="grid grid-cols-[144px,60px] mr-4"
         action={async (e) => {
           const result = await signInWithCredentials(e);
           if (!result?.status) loginError(result?.message);
@@ -82,18 +83,21 @@ export default function SignIn({ session }: { session: Session | null }) {
           </button>
         </div>
       </form>
+      {/* <Link className="text-blue-900 p-0 top-2 invisible md:visible" href="/signup" passHref>
+        <pre>{`create\naccount`}</pre>
+      </Link> */}
       {/* <div className="inline-block  invisible md:visible ">
           <form action={signInWithGoogle} className="md:h-[25px] md:w-[25px] h-0 w-0">
             <button>
               <FcGoogle size={"25"} className="w-0 h-0" />
             </button>
-          </form>
+            </form>
           <form action={signInWithGoogle} className="md:h-[25px] md:w-[25px] h-0 w-0">
-            <button>
+          <button>
               <SiNaver size={"20"} className="ml-[2px] w-0 h-0" />
-            </button>
+              </button>
           </form>
-        </div> */}
+          </div> */}
     </>
   );
 }

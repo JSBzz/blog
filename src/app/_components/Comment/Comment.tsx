@@ -1,19 +1,11 @@
 "use client";
 
-import { useState } from "react";
 import CommentInput from "./CommentInput";
 import CommentList from "./CommentList";
 import { useQuery } from "@tanstack/react-query";
+import { Session } from "next-auth";
 
-export default function Comment({
-  session,
-  postId,
-  commentList,
-}: {
-  session: any;
-  postId: any;
-  commentList: any;
-}) {
+export default function Comment({ session, postId }: { session: Session; postId: string }) {
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["POST", "COMMENT", postId],
     queryFn: async () => {

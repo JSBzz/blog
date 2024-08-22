@@ -60,6 +60,7 @@ export default function EditPost({ params }: { params: { postId: string; postSlu
   const [postData, setPostData] = useState<{
     postId: string;
     title: string;
+    subTitle: string;
     contents: string;
     images: { file: File; url: string }[];
     tags: string[];
@@ -68,6 +69,7 @@ export default function EditPost({ params }: { params: { postId: string; postSlu
   }>({
     postId: params?.postId,
     title: "",
+    subTitle: "",
     contents: "",
     images: [],
     tags: [],

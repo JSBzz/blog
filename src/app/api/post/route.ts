@@ -67,6 +67,7 @@ export async function POST(request: NextRequest) {
       data: {
         contents: body.contents,
         title: body.title,
+        subtitle: body.subtitle,
         title_slug: body.title.replaceAll(" ", "-"),
         category_code: body?.subCategory,
         writer_seq: session?.user?.seq,

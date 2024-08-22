@@ -1,5 +1,7 @@
 "use client";
 import PostWriteCategory from "@/app/_components/Post/Write/PostWriteCategory";
+import PostWriteTag from "@/app/_components/Post/Write/PostWriteTag";
+import PostWriteTitle from "@/app/_components/Post/Write/PostWriteTitle";
 import Editor from "@/app/config/tiptab/editor";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -53,14 +55,18 @@ export default function WritePost() {
   const router = useRouter();
   const [postData, setPostData] = useState<{
     title: string;
+    subtitle: string;
     contents: string;
+    thumbNail: string;
     images: { file: File; url: string }[];
     tags: string[];
     mainCategory: string;
     subCategory: string;
   }>({
     title: "",
+    subtitle: "",
     contents: "",
+    thumbNail: "",
     images: [],
     tags: [],
     mainCategory: "0",
@@ -78,7 +84,11 @@ export default function WritePost() {
       router.push("/");
     },
   });
-  const { data: categoryData, isLoading } = useQuery({
+  const {
+    data: categoryData,
+    isLoading,
+    isFetched,
+  } = useQuery({
     queryKey: ["categories"],
     queryFn: async () => {
       const main = await getMainCategoryRequest();
@@ -90,18 +100,8 @@ export default function WritePost() {
   return (
     <div className="content-center object-center justify-center text-left flex flex-col">
       <div className="w-[300px] sm:w-[500px] md:w-[1000px] m-auto mt-4">
-        <div>
-          <label htmlFor="title" className="">
-            제목
-          </label>
-          <input
-            id="title"
-            className=" t-4 flex w-full border rounded-md p-2"
-            onChange={(e) => {
-              setPostData({ ...postData, title: e.target.value });
-            }}
-          />
-        </div>
+        <PostWriteTitle postData={postData} setPostData={setPostData} />
+
         <div className="mt-2">
           <PostWriteCategory
             categoryData={categoryData}
@@ -111,49 +111,14 @@ export default function WritePost() {
             setSubCategory={setSubCategory}
           />
         </div>
-        <Editor setPostData={setPostData} postData={postData} />
-        <div className="mt-2">
-          <input
-            className="border w-32 mr-2 p-1 rounded-md"
-            value={inputTag}
-            onChange={(e) => {
-              setInputTag(e.target.value);
-            }}
-          />
-          <button
-            className="bg-slate-200 p-1 rounded-md"
-            onClick={() => {
-              if (inputTag.replaceAll(" ", "") != "" && !postData.tags.includes(inputTag)) {
-                setInputTag("");
-                setPostData({ ...postData, tags: [...postData.tags, inputTag] });
-              }
-            }}
-          >
-            태그 추가
-          </button>
-        </div>
-        <h1 className="mt-2">태그</h1>
-        <div className="border m-auto p-2 gap-y-2 min-h-11">
-          {postData.tags.map((tagName: string, idx) => {
-            return (
-              <span className="bg-slate-200 p-1 rounded-md m-1 text-wrap" key={`add-tag-${idx}`}>
-                {tagName}{" "}
-                <button
-                  onClick={() => {
-                    setPostData({
-                      ...postData,
-                      tags: postData.tags.filter((tag) => {
-                        return tag != tagName;
-                      }),
-                    });
-                  }}
-                >
-                  x
-                </button>
-              </span>
-            );
-          })}
-        </div>
+        {isFetched && <Editor setPostData={setPostData} postData={postData} />}
+
+        <PostWriteTag
+          postData={postData}
+          setPostData={setPostData}
+          inputTag={inputTag}
+          setInputTag={setInputTag}
+        />
         <button
           onClick={(e) => {
             e.preventDefault();
@@ -167,7 +132,7 @@ export default function WritePost() {
           }}
           className="bg-slate-300 rounded-md p-1 m-auto mt-2 font-bold w-20"
         >
-          작성
+          등록
         </button>
         <div className="text-center text-red-600">{errorMessage}</div>
       </div>

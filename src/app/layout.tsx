@@ -15,14 +15,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: React.ReactNode; modal: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body className={inter.className}>
         <Providers>
           {props?.modal}
           <Header />
-          {/* <RightNav /> */}
+          <RightNav />
           <NextTopLoader />
-          {props?.children}
+          <div className="overflow-x-hidden transition-colors dark:bg-zinc-900 bg-gray-50">
+            {props?.children}
+          </div>
           <div id="modal-root"></div>
         </Providers>
       </body>
