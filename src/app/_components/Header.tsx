@@ -9,12 +9,12 @@ export default async function Header() {
     <div className="sticky top-0 z-50">
       <div className=" bg-white opacity-95  backdrop-blur-3xl">
         <div className="flex h-16 align-middle items-center shadow-md justify-between sticky top-0">
-          <SignIn session={session} />
           <Link href="/">
             <h1 className="font-bold text-2xl ml-6">Blog</h1>
           </Link>
+          <SignUp />
+          <SignIn session={session} />
         </div>
-        <SignUp />
       </div>
       {session?.user?.role == "admin" && (
         <div className="bg-slate-50 p-1">

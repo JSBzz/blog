@@ -1,9 +1,15 @@
 "use client";
-import { signInWithCredentials, signOutWithForm } from "@/app/config/next-auth/authAction";
+import {
+  signInWithCredentials,
+  signInWithGoogle,
+  signOutWithForm,
+} from "@/app/config/next-auth/authAction";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FcGoogle } from "react-icons/fc";
+import { SiNaver } from "react-icons/si";
 
 const loginError = (message) => {
   toast.error(message, {
@@ -25,7 +31,11 @@ export default function SignIn({ session }: { session: Session | null }) {
   if (session?.user) {
     return (
       <form className="absolute right-6 grid grid-rows-2" action={signOutWithForm}>
-        <span className="">{`${session.user.id} (${session.user.nickname})`}</span>
+        {session.user.provider == "credential" ? (
+          <span>{`${session.user.id} (${session.user.nickname})`}</span>
+        ) : (
+          <span>{`${session.user?.email} (${session.user.provider})`}</span>
+        )}
         <div className="w-full text-center">
           <button className="bg-blue-200 text-blue-800 justify-center rounded-md w-fit pr-1 pl-1">
             로그아웃
@@ -36,9 +46,9 @@ export default function SignIn({ session }: { session: Session | null }) {
   }
 
   return (
-    <span className="absolute right-2 grid grid-cols-[214px,40px] w-52 overflow-hiddene">
+    <>
       <form
-        className="grid grid-cols-[144px,50px]"
+        className="grid grid-cols-[144px,60px] mr-2"
         action={async (e) => {
           const result = await signInWithCredentials(e);
           if (!result?.status) loginError(result?.message);
@@ -66,12 +76,24 @@ export default function SignIn({ session }: { session: Session | null }) {
             }}
           />
         </div>
-        <div className="w-[40px]">
-          <button className="h-[50px] bg-slate-200 rounded-r-md p-2 text-slate-600 hover:bg-slate-300 active:bg-slate-400">
+        <div className="w-full h-full">
+          <button className="bg-slate-200 w-full h-full rounded-r-md p-2 text-slate-600 hover:bg-slate-300 active:bg-slate-400">
             Login
           </button>
         </div>
       </form>
-    </span>
+      {/* <div className="inline-block  invisible md:visible ">
+          <form action={signInWithGoogle} className="md:h-[25px] md:w-[25px] h-0 w-0">
+            <button>
+              <FcGoogle size={"25"} className="w-0 h-0" />
+            </button>
+          </form>
+          <form action={signInWithGoogle} className="md:h-[25px] md:w-[25px] h-0 w-0">
+            <button>
+              <SiNaver size={"20"} className="ml-[2px] w-0 h-0" />
+            </button>
+          </form>
+        </div> */}
+    </>
   );
 }

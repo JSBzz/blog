@@ -20,7 +20,7 @@ export default function RootLayout(props: { children: React.ReactNode; modal: Re
         <Providers>
           {props?.modal}
           <Header />
-          <RightNav />
+          {/* <RightNav /> */}
           <NextTopLoader />
           {props?.children}
           <div id="modal-root"></div>

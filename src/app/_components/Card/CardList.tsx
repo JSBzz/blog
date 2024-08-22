@@ -70,7 +70,7 @@ export default function CardList({
           <div key={`list-group-${i}`}>
             {group?.data?.map((data: any) => {
               return (
-                <div key={`data-${data.id}`} className="mt-8">
+                <div key={`data-${data.id}`} className="m-5">
                   <CardBox data={data} />
                 </div>
               );

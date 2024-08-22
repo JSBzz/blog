@@ -12,11 +12,8 @@ export default function CardBox({ data }: { data: any }) {
   const regex = /<img\s+[^>]*src="([^"]*)"/;
   const match = regex.exec(contents);
   return (
-    <div
-      role="listitem"
-      className="space-y-4 md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center shadow-md"
-    >
-      <div className="flex items-center justify-center min-w-[247px] h-44 sm:h-56 md:w-[200px] relative  bg-slate-200 rounded-t-md overflow-hidden md:rounded-l-md md:rounded-tr-none">
+    <div role="listitem" className="md:flex shadow-md md:h-[247px] ">
+      <div className="flex items-center justify-center min-w-[247px] min-h-[247px] sm:h-56 relative  bg-slate-200 rounded-t-md overflow-hidden md:rounded-l-md md:rounded-tr-none">
         <Link href={`/post/${id}/${title_slug}`}>
           <Image
             alt={`${id}-image`}
@@ -29,26 +26,26 @@ export default function CardBox({ data }: { data: any }) {
         </Link>
       </div>
       <div className="w-full h-full">
-        <Link
-          href={`/post/filter/ALL/${category?.category_code}`}
-          className="sm:m-4 md:ml-0 m-4 text-slate-500"
-        >
-          {category?.category_name}
-        </Link>
+        <div className="mt-2">
+          <Link
+            href={`/post/filter/ALL/${category?.category_code}`}
+            className="m-4 text-slate-500 mt-2 h-8"
+          >
+            {category?.category_name}
+          </Link>
+        </div>
         <Link href={`/post/${id}/${title_slug}`}>
-          <section className="w-full h-full">
-            <section className="w-48 pl-4 md:pl-0 ">
-              <h1 className="text-2xl font-bold w-[360px] truncate mb-2">{title}</h1>
-              {/* <h2 className="text-slate-500">{user.nickname}</h2> */}
-            </section>
-            <section className="h-16 max-w-[300px] mb-2 md:max-w-[500px] flex-grow text-ellipsis text-[#8a8a8a] break-words md:h-20">
-              <h1 className="line-clamp-2 pr-4 pl-4 md:pl-0 max-w-[260px] sm:max-w-[400px] md:max-w-[350px] md:line-clamp-3">
-                {contents.replace(/<\/?[^>]+>/gi, "")}
-              </h1>
-            </section>
+          <section className="w-48 pl-4 ">
+            <h1 className="text-2xl font-bold w-[300px] truncate mb-2">{title}</h1>
+            {/* <h2 className="text-slate-500">{user.nickname}</h2> */}
+          </section>
+          <section className="h-16 max-w-[420px] md:max-w-[500px] flex-grow text-ellipsis text-[#8a8a8a] break-words md:h-24">
+            <span className="line-clamp-2 pr-4 pl-4  max-w-[420px] sm:max-w-[420px] md:max-w-[380px] md:line-clamp-3">
+              {contents.replace(/<\/?[^>]+>/gi, "")}
+            </span>
           </section>
         </Link>
-        <div className="md:w-[420px] sm:w-96 break-words ml-4 md:ml-0 flex flex-wrap overflow-hidden h-8">
+        <div className="md:w-[380px] sm:w-96 break-words ml-4 flex flex-wrap overflow-hidden h-8">
           {post_tag.map((tag: any) => {
             return (
               <span key={`tag-${tag.id}`} className="w-fit flex flex-col">
@@ -57,7 +54,7 @@ export default function CardBox({ data }: { data: any }) {
             );
           })}
         </div>
-        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 md:pl-0">{created_at}</div>
+        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 p-1">{created_at}</div>
       </div>
     </div>
   );

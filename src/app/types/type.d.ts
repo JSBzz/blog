@@ -7,13 +7,16 @@ declare module "next-auth" {
   interface Session {
     user: {
       /** The user's name. */
+      provider: string;
       seq: number;
       id: string;
       nickname: string;
       role: string;
+      email: string;
     };
   }
   interface Token {
+    provider: string;
     seq: number;
     id: string;
     nickname: string;
@@ -21,6 +24,7 @@ declare module "next-auth" {
 
   interface User {
     seq: number;
+    provider: string;
     id: string;
     nickname: string | null;
     role: string;
