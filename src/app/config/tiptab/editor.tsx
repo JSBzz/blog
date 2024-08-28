@@ -9,6 +9,7 @@ import { EditorProvider, useCurrentEditor } from "@tiptap/react";
 import Image from "@tiptap/extension-image";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useEffect, useState } from "react";
+import { FaBold } from "react-icons/fa";
 import { ColorPicker, useColor } from "react-color-palette";
 import "react-color-palette/css";
 
@@ -28,15 +29,15 @@ const MenuBar = ({ setPostData, postData }: { setPostData: any; postData: any })
   return (
     <div className="control-group border p-2 w-[300px] sm:w-[500px] flex m-auto mt-4 rounded-md md:w-[1000px]">
       <div className="button-group">
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          disabled={!editor.can().chain().focus().toggleBold().run()}
-          className={`${
-            editor.isActive("bold") ? "bg-slate-400" : ""
-          } bg-slate-200 rounded-md pl-3 pr-3 mr-2 mb-1`}
-        >
-          Bold
-        </button>
+        <FaBold>
+          <button
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            disabled={!editor.can().chain().focus().toggleBold().run()}
+            className={`${
+              editor.isActive("bold") ? "bg-slate-400" : ""
+            } bg-slate-200 rounded-md pl-3 pr-3 mr-2 mb-1`}
+          ></button>
+        </FaBold>
         <button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={!editor.can().chain().focus().toggleItalic().run()}
