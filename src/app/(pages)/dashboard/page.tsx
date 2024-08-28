@@ -1,5 +1,6 @@
 "use client";
 
+import { getPostCategories, savePostCategory } from "@/app/services/postService";
 import { useMutation, useQueries, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -9,19 +10,11 @@ export default function Category() {
   const [category, setCategory] = useState({ main: [], sub: [] });
   const { data, refetch } = useQuery({
     queryKey: ["CATEGORY-LIST-MAIN"],
-    queryFn: async () => {
-      const response = await fetch("/api/category?type=main");
-      const result = await response.json();
-      return result;
-    },
+    queryFn: async () => getPostCategories("main"),
   });
   const { data: subData, refetch: subRefetch } = useQuery({
     queryKey: ["CATEGORY-LIST-SUB"],
-    queryFn: async () => {
-      const response = await fetch("/api/category?type=sub");
-      const result = await response.json();
-      return result;
-    },
+    queryFn: async () => getPostCategories("sub"),
   });
 
   useEffect(() => {
@@ -34,14 +27,7 @@ export default function Category() {
   }, [data, subData]);
   const { mutate } = useMutation({
     mutationFn: async () => {
-      await fetch("/api/category", {
-        method: "post",
-        body: JSON.stringify({
-          categoryName: categoryName,
-          categoryCode: categoryName.toUpperCase().replaceAll(" ", "_"),
-          parentCategoryCode: insertTarget == "sub" ? selectedMain : null,
-        }),
-      });
+      await savePostCategory(categoryName, insertTarget, selectedMain);
     },
     onSuccess: () => {
       setCategoryName("");

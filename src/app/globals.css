@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "./css/toast.css"; /* Basic editor styles */
 
 .tiptap {
   :first-child {

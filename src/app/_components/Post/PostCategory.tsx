@@ -18,7 +18,7 @@ export default function PostCategory({
       <div>
         <div className="hover group w-fit text-center relative">
           <div className="flex">
-            <span>{selectedCategory}</span>
+            <span>{decodeURIComponent(selectedCategory.replace("_", " "))}</span>
             <svg
               className="ml-2 w-4 h-4 transition-transform peer-hover:rotate-180 bottom-0"
               xmlns="http://www.w3.org/2000/svg"

@@ -5,11 +5,19 @@ import { auth } from "@/app/config/next-auth/auth";
 import Comment from "@/app/_components/Comment/Comment";
 import Link from "next/link";
 
+export async function generateMetadata({ params }: any) {
+  return {
+    title: decodeURI(`${params?.postSlug} - JSB Blog`),
+    description: `Post : ${params?.postSlug}`,
+  };
+}
+
 export default async function PostPage({
   params,
 }: {
   params: { postId: string; postSlug: string };
 }) {
+  generateMetadata(params);
   const session = await auth();
   const response = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/${params.postId}`);
   const data = await response.json();

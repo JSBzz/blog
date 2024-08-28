@@ -100,7 +100,10 @@ export async function PUT(request: NextRequest) {
         category_code: body.subCategory,
         writer_seq: session?.user?.seq,
       },
-      where: { id: body?.postId },
+      where: { id: Number(body?.postId) },
+    });
+    await client.post_tag.deleteMany({
+      where: { table_id: Number(response.id) },
     });
     await client.post_tag.createMany({
       data: body?.tags.map((tag: string) => {
