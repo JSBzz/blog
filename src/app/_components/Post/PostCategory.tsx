@@ -1,18 +1,54 @@
+'use client'
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
+
+
+
 export default function PostCategory({
-  categoryList,
   selectedTag,
   selectedCategory,
 }: {
-  categoryList: any;
   selectedTag: string;
   selectedCategory: string;
 }) {
-  categoryList.unshift({
+
+  const {data:mainCategoryData, isLoading:mainCategoryLoading} = useQuery({
+    queryKey:['CATEGORY', 'MAIN'],
+    queryFn:async() =>{
+      const mainCategoryResponse = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/category`);
+      const mainCategoryList = await mainCategoryResponse.json();
+      return mainCategoryList
+    }
+  })
+
+  const {data:subCategoryData, isLoading:subCategoryLoading} = useQuery({
+    queryKey:['CATEGORY', 'SUB'],
+    queryFn:async() =>{
+      const subCategoryResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_ROOT_URL}/api/category?type=sub`
+      );
+    const subCategoryList = await subCategoryResponse.json();
+    return subCategoryList
+    }
+  })
+
+  if(mainCategoryLoading && subCategoryLoading) return <></>
+
+  let categoryList = mainCategoryData?.map((main: any) => {
+    let childList: any[] = [];
+    subCategoryData?.map((sub: any) => {
+      if (main.category_code == sub.parent_category_code) {
+        childList.push(sub);
+      }
+    });
+    return { ...main, child: childList };
+  });
+  categoryList?.unshift({
     category_code: "ALL",
     category_name: "ALL",
   });
+
   return (
     <div>
       <div>
@@ -35,7 +71,7 @@ export default function PostCategory({
             </svg>
           </div>
           <div className="group-hover:bg-slate-50 invisible h-0 group-hover:visible group-hover:h-fit transition-transform rounded-md absolute  border-slate-300 border p-1 mt-2 flex-col flex top-6 left-1/2 translate-x-[-50%] text-center">
-            {categoryList?.map((category: any) => {
+            {categoryList?.map((category: any, idx) => {
               // if (category.category_code == selectedCategory) {
               //   return (
               //     <div
@@ -48,7 +84,7 @@ export default function PostCategory({
               // }
               return (
                 <div
-                  key={category.catecory_code}
+                  key={`category-code-${category.catecory_code}-${idx}`}
                   className="flex flex-row relative w-full text-center"
                 >
                   <Link

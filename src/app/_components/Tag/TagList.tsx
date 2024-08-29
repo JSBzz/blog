@@ -1,15 +1,32 @@
+'use client'
+
+import { useQuery } from "@tanstack/react-query";
 import { SelectedTag, Tag } from "./Tag";
 
-export async function TagListAll({
-  tagList,
+
+export function TagListAll({
   selectedTagName,
   selectedCategoryCode,
 }: {
-  tagList: any;
   selectedTagName: string | null;
   selectedCategoryCode: string;
 }) {
-  return tagList.map((tag: any) => {
+  const {data, isLoading}=useQuery({
+    queryKey:['TAG',selectedCategoryCode],
+    queryFn: async () => {
+      const tagResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/tag?categoryCode=${selectedCategoryCode}`,
+        {
+          method: "get",
+          cache: "no-store",
+        }
+      );
+      const tagList = await tagResponse.json();
+      return tagList
+    }
+  })
+  if(isLoading) return <></>
+  return data?.map((tag: any) => {
     if (tag.tag_name == decodeURIComponent(selectedTagName)) {
       return (
         <SelectedTag

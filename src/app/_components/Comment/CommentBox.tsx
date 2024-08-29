@@ -4,6 +4,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Spinner from "../Common/Spinner";
+import moment from "moment";
 
 const passwordVerifyRequest = async (data: any, password: string, target: string) => {
   const response = await fetch(`/api/post/${data?.post_id}/comment/${data?.id}/verification`, {
@@ -115,10 +116,10 @@ export default function CommentBox({
           <span className="text-right">
             {comment?.changed_at && (
               <span className="mr-1 text-slate-500 text-sm">
-                updated at : {comment?.changed_at}
+                updated at : {moment(comment?.changed_at).format('YYYY년 MM월 DD일 HH시 mm분')}
               </span>
             )}
-            {comment?.created_at}
+            {moment(comment?.created_at).format('YYYY년 MM월 DD일 HH시 mm분')}
           </span>
         </div>
         {editFlag ? (

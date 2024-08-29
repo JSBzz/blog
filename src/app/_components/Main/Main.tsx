@@ -15,44 +15,17 @@ export default async function Main({
   searchParam: null | string;
 }) {
   const session = await auth();
-  const tagResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/api/post/tag?categoryCode=${categoryCode}`,
-    {
-      method: "get",
-      cache: "no-store",
-    }
-  );
+
   categoryCode = categoryCode ?? "ALL";
   tagName = tagName ?? "ALL";
 
-  const mainCategoryResponse = await fetch(`${process.env.NEXT_PUBLIC_ROOT_URL}/api/category`, {
-    cache: "no-store",
-  });
-  const subCategoryResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_ROOT_URL}/api/category?type=sub`,
-    {
-      cache: "no-store",
-    }
-  );
-  const subCategoryList = await subCategoryResponse.json();
-  const mainCategoryList = await mainCategoryResponse.json();
-  let categoryList = mainCategoryList.map((main: any) => {
-    let childList: any[] = [];
-    subCategoryList.map((sub: any) => {
-      if (main.category_code == sub.parent_category_code) {
-        childList.push(sub);
-      }
-    });
-    return { ...main, child: childList };
-  });
-  const tagList = await tagResponse.json();
+
 
   return (
     <div className="h-full  w-[100%] flex flex-col items-center ">
-      <div className="border-b-2 mb-2 text-center font-bold text-3xl flex m-auto max-w-48">
+      <div className="border-b-2 mb-2 text-center font-bold text-3xl flex m-auto max-w-48 mt-4 mb-4">
         <div className="z-40 mt-4">
           <PostCategory
-            categoryList={categoryList}
             selectedCategory={categoryCode}
             selectedTag={tagName}
           />
@@ -63,7 +36,6 @@ export default async function Main({
           <h1 className="text-slate-500">TAGS</h1>
           <div className="flex p-1  rounded-lg flex-wrap gap-y-2 justify-center">
             <TagListAll
-              tagList={tagList}
               selectedTagName={tagName}
               selectedCategoryCode={categoryCode}
             />

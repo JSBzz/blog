@@ -1,8 +1,9 @@
 "use client";
 import Image from "next/image";
-import noThumb from "../../_images/default_thumb.jpg";
+// import noThumb from "../../_images/default_thumb.jpg";
 import Link from "next/link";
 import { useState } from "react";
+import moment from 'moment'
 import { Tag } from "../Tag/Tag";
 
 export default function CardBox({ data }: { data: any }) {
@@ -11,6 +12,7 @@ export default function CardBox({ data }: { data: any }) {
 
   const regex = /<img\s+[^>]*src="([^"]*)"/;
   const match = regex.exec(contents);
+  console.log(match)
   return (
     <div
       role="listitem"
@@ -18,14 +20,16 @@ export default function CardBox({ data }: { data: any }) {
     >
       <div className="flex items-center justify-center min-w-[247px] min-h-[247px] sm:h-56 relative  bg-slate-200 rounded-md overflow-hidden md:rounded-l-md md:rounded-tr-none md:rounded-br-none">
         <Link href={`/post/${id}/${title_slug}`}>
-          <Image
+          {match ? <Image
             alt={`${id}-image`}
             onError={() => setError(true)}
-            src={match?.[1] ? (error ? noThumb : match![1]) : noThumb}
+            src={ match![1]}
             fill
             objectFit="cover"
             sizes="100vw"
           />
+          :
+          <div className="text-gray-800 flex text-2xl font-bold text-center p-2">{title}</div>}
         </Link>
       </div>
       <div className="w-full h-full">
@@ -57,7 +61,7 @@ export default function CardBox({ data }: { data: any }) {
             );
           })}
         </div>
-        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 p-1">{created_at}</div>
+        <div className="text-[#8a8a8a] text-sm mt-2 pl-4 p-1">{moment(created_at).format('YYYY년 MM월 DD일 HH시 mm분')}</div>
       </div>
     </div>
   );
