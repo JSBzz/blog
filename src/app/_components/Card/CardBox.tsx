@@ -16,7 +16,7 @@ export default function CardBox({ data }: { data: any }) {
   return (
     <div
       role="listitem"
-      className="md:flex shadow-md md:h-[247px] dark:bg-zinc-700 rounded-md bg-white"
+      className="md:flex shadow-md md:h-[247px] dark:bg-zinc-700 rounded-md bg-white hover:bg-zinc-100 transition-all hover:rotate-2 duration-200"
     >
       <div className="flex items-center justify-center min-w-[247px] min-h-[247px] sm:h-56 relative  bg-slate-200 rounded-md overflow-hidden md:rounded-l-md md:rounded-tr-none md:rounded-br-none">
         <Link href={`/post/${id}/${title_slug}`}>

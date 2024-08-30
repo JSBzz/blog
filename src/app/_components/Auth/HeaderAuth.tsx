@@ -31,7 +31,7 @@ export default function SignIn({ session }: { session: Session | null }) {
 
   if (session?.user) {
     return (
-      <form className="absolute right-6 grid grid-rows-2" action={signOutWithForm}>
+      <form className="grid grid-rows-2" action={signOutWithForm}>
         {session.user.provider == "credential" ? (
           <span>{`${session.user.id} (${session.user.nickname})`}</span>
         ) : (

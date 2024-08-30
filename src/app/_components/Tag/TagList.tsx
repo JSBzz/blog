@@ -25,7 +25,15 @@ export function TagListAll({
       return tagList
     }
   })
-  if(isLoading) return <></>
+  if(isLoading) return <div className="animate-pulse">
+    <div className="flex">
+      <div className="bg-gray-200 rounded-lg dark:bg-gray-700 pt-1 pb-1 pr-2 h-[32px] min-w-20 mr-1"/>
+      <div className="bg-gray-200 rounded-lg dark:bg-gray-700 pt-1 pb-1 pr-2 h-[32px] min-w-20 mr-1"/>
+      <div className="bg-gray-200 rounded-lg dark:bg-gray-700 pt-1 pb-1 pr-2 h-[32px] min-w-20 mr-1"/>
+      <div className="bg-gray-200 rounded-lg dark:bg-gray-700 pt-1 pb-1 pr-2 h-[32px] min-w-20 mr-1"/>
+      <div className="bg-gray-200 rounded-lg dark:bg-gray-700 pt-1 pb-1 pr-2 h-[32px] min-w-20 mr-1"/>
+    </div>
+  </div>
   return data?.map((tag: any) => {
     if (tag.tag_name == decodeURIComponent(selectedTagName)) {
       return (

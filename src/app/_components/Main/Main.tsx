@@ -22,8 +22,8 @@ export default async function Main({
 
 
   return (
-    <div className="h-full  w-[100%] flex flex-col items-center ">
-      <div className="border-b-2 mb-2 text-center font-bold text-3xl flex m-auto max-w-48 mt-4 mb-4">
+    <div className="h-full  w-[100%] flex flex-col items-center min-h-[calc(100vh-134px)]">
+      <div className="border-b-2 mb-2 text-center font-bold text-3xl flex m-auto max-w-48 mt-4">
         <div className="z-40 mt-4">
           <PostCategory
             selectedCategory={categoryCode}

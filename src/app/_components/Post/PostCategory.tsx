@@ -33,7 +33,7 @@ export default function PostCategory({
     }
   })
 
-  if(mainCategoryLoading && subCategoryLoading) return <></>
+  if(mainCategoryLoading && subCategoryLoading) return <div className="h-[36px] animate-pulse bg-gray-200 rounded-lg dark:bg-gray-700 min-w-14"/>
 
   let categoryList = mainCategoryData?.map((main: any) => {
     let childList: any[] = [];

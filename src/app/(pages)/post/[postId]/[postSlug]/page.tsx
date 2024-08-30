@@ -55,7 +55,6 @@ export default async function PostPage({
           </div>
         </div>
         <Comment session={session} postId={params?.postId} />
-        <div className="h-96"></div>
       </div>
     </div>
   );

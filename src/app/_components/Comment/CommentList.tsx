@@ -10,6 +10,7 @@ export default function CommentList({
   session: Session;
   refetch: any;
 }) {
+  if(data?.length == 0 ) return <div className="m-4 text-center text-gray-400">댓글이 존재하지 않습니다!</div>
   return (
     <div>
       {data.map((comment: any) => {
